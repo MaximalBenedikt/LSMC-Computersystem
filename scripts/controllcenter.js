@@ -139,10 +139,7 @@ function saveactionform() {
     $.ajax({
         type:"POST",
         url:"/controllcenter/database.php",
-        data:formcontent,
-        success:function (data) {
-            console.log(data);
-        }
+        data:formcontent
     });
 }
 
