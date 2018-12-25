@@ -42,13 +42,13 @@
                     </div>
                     <div class="partitionleft">
                         <div class="label">Kommentar</div>
-                        <textarea cols="27" rows="5" tabindex="7"></textarea>
+                        <textarea cols="27" rows="5" tabindex="7" id="comment"></textarea>
                     </div>
                     <div class="partitionleft">
                         <div class="label" >Priorität</div>
-                        <select tabindex="8">
+                        <select tabindex="8" id="prio">
                             <option value="0">Niedrig</option>
-                            <option value="1">Normal</option>
+                            <option value="1" id="prionorm">Normal</option>
                             <option value="2">Hoch</option>
                             <option value="3">Höchste</option>
                         </select>
@@ -67,14 +67,11 @@
                         <button type="button" id="completeactionbutton" class="actionbuttons show3"><img src="">Einsatz abschließen</button>
                     </div>
                     <div class="buttongroup">
-                        <button type="button" id="showvehiclesbutton" class="actionbuttons"><img src="">Einsatz löschen</button>
-                        <button type="button" id="showbutton" class="actionbuttons"><img src="">Einsatz abschließen</button>
+                        <button type="button" id="activusersbutton" class="actionbuttons"><img src="">Dienstplan</button>
+                        <button type="button" id="activteamsbutton" class="actionbuttons"><img src="">Zuweisung</button>
                     </div>
                 </div>
             </form>
-        </div>
-        <div id="actionmenu">
-
         </div>
     </section>
     <section id="controllcenter_vehicles">

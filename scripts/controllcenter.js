@@ -41,6 +41,12 @@ function openControllcenter(){
     });
     $("#actionbutton").button().click(function() {
         opennewaction();
+    });    
+    $("#activusersbutton").button().click(function() {
+        showusers();
+    });
+    $("#activteamsbutton").button().click(function() {
+        showvehicles();
     });
     $('#controllcenter_action_form').find('input, textarea, select').change(function () {
         $('#savebutton').button( "enable" );
@@ -98,7 +104,10 @@ function opennewaction(){
         }
     });
     $('#controllcenter_action_form #location').select();
+    $('#controllcenter_action_form #prionorm').prop('selected' , true)
 }
+
+
 
 //Löscht das Formular und Deaktiviert es 
 function clearactionform(){
@@ -107,6 +116,8 @@ function clearactionform(){
     $('#controllcenter_action_form').find('.show2, .show3').button("disable");
     $('#controllcenter_action_form').find('.show1').button("enable");
 }
+
+
 
 //Speichert den Inhalt des Formulars in die Datenbank
 function saveactionform() {
@@ -118,15 +129,21 @@ function saveactionform() {
             formcontent[$( this ).attr('id')] = $( this ).val();
         }
     );
+    if ($('#controllcenter_action_form').find('input #sirene').prop('checked')) {
+        formcontent['sirene'] = 1;
+    } else {
+        formcontent['sirene'] = 0;
+    };
     console.log(formcontent);
-        
+    formcontent['action'] = 'saveaction';
+    $.ajax({
+        type:"POST",
+        url:"/controllcenter/database.php",
+        data:formcontent,
+        success:function (data) {
+            console.log(data);
+        }
+    });
 }
 
 
-
-
-
-//
-$(function () {
-    clockupdate();
-})

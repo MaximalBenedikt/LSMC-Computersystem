@@ -10,3 +10,10 @@
         $result = $statement->fetch();
         echo $result['enr'];
     }
+
+    if($_POST['action']=='saveaction') {
+        $sqlstatement = "UPDATE `actions` SET `object` = '" . $_POST['locationobject'] . "' , `position` = '" . $_POST['location'] . "' , `longterm` = '" . $_POST['keywordexpanded'] . "' , `shortterm` = '" . $_POST['keywordshort'] . "' , `callername` = '" . $_POST['callername'] . "' , `callerid` = '" . $_POST['callerid'] . "' , `comment` = '" . $_POST['comment'] . "' , `prio` = '" . $_POST['prio'] . "' , `active` = '1' , `specialrights` = '" . $_POST['sirene']. "' WHERE `enr`=" . $_POST['enr'];
+        $statement = $pdo->prepare($sqlstatement);
+        $statement->execute();
+        echo $sqlstatement;
+    }
