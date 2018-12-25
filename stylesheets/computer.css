@@ -1,0 +1,40 @@
+body {
+    background-image: url('/background.jpg');
+}
+
+
+
+#taskleiste {
+    left: 0px;
+    height: 50px;
+    bottom: 0px;
+    position: absolute;
+    margin: 0px;
+    width: -webkit-fill-available;
+    background: linear-gradient(to right, blue, white); 
+    border: 1px solid black;
+}
+
+#taskleiste h1{
+    margin: 0px;
+    padding: 5px 10px;
+    float: left;
+    border: 2px solid black;
+}
+
+#taskleiste .spacer{
+    border: 1px solid black;
+    height: -webkit-fill-available;
+    width: 0px;
+    margin: 0px 5px;
+    float: left;
+}
+
+
+
+
+/*Login Formular*/
+#dialog_login #login_button {
+    left: 60%;
+    position: relative;
+}

@@ -1,0 +1,247 @@
+<div id="controllcenter" class="fullscreen" title="LSMC Leitstelle">
+    <div id="controllcenter_menubar">
+        <div id="button_create_action" class="button_menubar">
+            <div id="clock">
+                <div id="date" class="menubar-widget clock">
+                    ----
+                </div>
+                <div id="time" class="menubar-widget clock">
+                    --:--:--
+                </div>
+            </div>
+        </div>
+    </div>
+    <section id="controllcenter_action">
+        <div id="controllcenter_action_header">Einsatzerstellung/-bearbeitung</div>
+        <div id="controllcenter_action_form">
+            <form>
+                <div class="left">
+                    <div class="partitionleft">
+                        <div class="label">ENr/Eröffnung</div>
+                        <input type="hidden" id="saved" value=""/>
+                        <input size="3" disabled id="enr" class="staydisabled">
+                        <input size="6" disabled id="date" class="staydisabled">
+                        <input size="6" disabled id="time" class="staydisabled">
+                    </div>
+                    <div class="partitionleft">
+                        <div class="label">Objekt</div>
+                        <input id="locationobject" tabindex="2"><br>
+                        <div class="label">Ort</div>
+                        <input id="location" tabindex="1">
+                    </div>
+                    <div class="partitionleft">
+                        <div class="label">Meldebild</div>
+                        <input id="keywordexpanded" tabindex="3"><br>
+                        <div class="label">Stichwort</div>
+                        <input size="10" id="keywordshort" tabindex="-1">
+                        <input type="checkbox" id="sirene" tabindex="4">
+                        <label for="sirene">Sonderrechte</label>
+                        <br>
+                        <div class="label">Mitteiler/Telefon</div>
+                        <input size="10" id="callername" tabindex="5"><input size="10" id="callerid" tabindex="6">
+                    </div>
+                    <div class="partitionleft">
+                        <div class="label">Kommentar</div>
+                        <textarea cols="27" rows="5" tabindex="7"></textarea>
+                    </div>
+                    <div class="partitionleft">
+                        <div class="label" >Priorität</div>
+                        <select tabindex="8">
+                            <option value="0">Niedrig</option>
+                            <option value="1">Normal</option>
+                            <option value="2">Hoch</option>
+                            <option value="3">Höchste</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="partitionright">
+                    <div>Einsatzmenü</div>
+                    <div class="buttongroup">
+                        <button type="button" id="actionbutton" class="actionbuttons show1"><img src="">Neuer Einsatz</button>
+                        <button type="button" id="savebutton" class="actionbuttons show2"><img src="">Übernehmen</button>
+                        <button type="button" id="dispatchbutton" class="actionbuttons show3"><img src="">Disponieren</button>
+                        <button type="button" id="removebutton" class="actionbuttons show2 show3"><img src="">Maske leeren</button>
+                    </div>
+                    <div class="buttongroup">
+                        <button type="button" id="deleteactionbutton" class="actionbuttons show3"><img src="">Einsatz löschen</button>
+                        <button type="button" id="completeactionbutton" class="actionbuttons show3"><img src="">Einsatz abschließen</button>
+                    </div>
+                    <div class="buttongroup">
+                        <button type="button" id="showvehiclesbutton" class="actionbuttons"><img src="">Einsatz löschen</button>
+                        <button type="button" id="showbutton" class="actionbuttons"><img src="">Einsatz abschließen</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="actionmenu">
+
+        </div>
+    </section>
+    <section id="controllcenter_vehicles">
+        <div id="controllcenter_vehicles_header">Fahrzeuge/Teams</div>
+        <div id="controllcenter_vehicles_liste">
+            <table id="">
+                <tr>
+                    <th>*</th>
+                    <th>Funkkenner/TeamID</th>
+                    <th>Stärke</th>
+                    <th>Letzte Position</th>
+                </tr>
+                <tr class="header">
+                    <td><button>2</button></td>
+                    <td>RTW 1</td>
+                    <td>2</td>
+                    <td>Stadtpark</td>
+                </tr>
+                <tr class="content">
+                    <td colspan="4">
+                        <table>
+                            <tr>
+                                <th>D-Nr</th>
+                                <th>Name</th>
+                                <th>Qualifikation</th>
+                            </tr>
+                            <tr>
+                                <td>97</td>
+                                <td>Testname, Testvorname</td>
+                                <td>Rettungssanitäter</td>
+                            </tr>
+                            <tfoot>
+                                <td>33</td>
+                                <td>Testname, Testvorname</td>
+                                <td>Azubi</td>
+                            </tfoot>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="header">
+                    <td><button>2</button></td>
+                    <td>RTW 1</td>
+                    <td>2</td>
+                    <td>Stadtpark</td>
+                </tr>
+                <tr class="content">
+                    <td colspan="4">
+                        <table>
+                            <tr>
+                                <th>D-Nr</th>
+                                <th>Name</th>
+                                <th>Qualifikation</th>
+                            </tr>
+                            <tr>
+                                <td>97</td>
+                                <td>Testname, Testvorname</td>
+                                <td>Rettungssanitäter</td>
+                            </tr>
+                            <tfoot>
+                                <td>33</td>
+                                <td>Testname, Testvorname</td>
+                                <td>Azubi</td>
+                            </tfoot>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="header">
+                    <td><button>2</button></td>
+                    <td>RTW 1</td>
+                    <td>2</td>
+                    <td>Stadtpark</td>
+                </tr>
+                <tr class="content">
+                    <td colspan="4">
+                        <table>
+                            <tr>
+                                <th>D-Nr</th>
+                                <th>Name</th>
+                                <th>Qualifikation</th>
+                            </tr>
+                            <tr>
+                                <td>97</td>
+                                <td>Testname, Testvorname</td>
+                                <td>Rettungssanitäter</td>
+                            </tr>
+                            <tfoot>
+                                <td>33</td>
+                                <td>Testname, Testvorname</td>
+                                <td>Azubi</td>
+                            </tfoot>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="header">
+                    <td><button>2</button></td>
+                    <td>RTW 1</td>
+                    <td>2</td>
+                    <td>Stadtpark</td>
+                </tr>
+                <tr class="content">
+                    <td colspan="4">
+                        <table>
+                            <tr>
+                                <th>D-Nr</th>
+                                <th>Name</th>
+                                <th>Qualifikation</th>
+                            </tr>
+                            <tr>
+                                <td>97</td>
+                                <td>Testname, Testvorname</td>
+                                <td>Rettungssanitäter</td>
+                            </tr>
+                            <tfoot>
+                                <td>33</td>
+                                <td>Testname, Testvorname</td>
+                                <td>Azubi</td>
+                            </tfoot>
+                        </table>
+                    </td>
+                </tr>
+                <tfoot>
+                    <td colspan="5">
+                        <button class="vehicleactionremove">Neues Team</button>
+                        <button class="vehicleactionremove">Teams bearbeiten</button>
+                        <button class="vehicleactionremove">Teams reseten</button>
+                    </td>
+                </tfoot>
+            </table>
+        </div>
+    </section>
+    <section id="controllcenter_lastactions">
+        <div id="controllcenter_lastactions_header">offene Einsätze</div>
+        <div>
+            <table>
+                <tr>
+                    <th>ENr</th>
+                    <th>Zeit</th>
+                    <th>Ort</th>
+                    <th>Nähere Ortsangabe</th>
+                    <th>Meldebild</th>
+                    <th>Alarmierte Einheiten</th>
+                </tr>
+                <tr class="aktiv">
+                    <td>0</td>
+                    <td>15:46:20</td>
+                    <td>Testort</td>
+                    <td></td>
+                    <td>Verkehrsunfall mit Personenschaden</td>
+                    <td>RTW 1, RTW 2, NEF 1</td>
+                </tr>
+                <tr class="">
+                    <td>1</td>
+                    <td>15:46:20</td>
+                    <td>Testort</td>
+                    <td></td>
+                    <td>Person gestürzt</td>
+                    <td>RTW 3</td>
+                </tr>
+                <tr class="">
+                    <td>2</td>
+                    <td>15:46:20</td>
+                    <td>Testort</td>
+                    <td></td>
+                    <td>Verkehrsunfall mit Personenschaden</td>
+                    <td>RTW 4</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+</div>
