@@ -129,7 +129,7 @@ function saveactionform() {
             formcontent[$( this ).attr('id')] = $( this ).val();
         }
     );
-    if ($('#controllcenter_action_form').find('input #sirene').prop('checked')) {
+    if ($('#controllcenter_action_form').find('#sirene').prop('checked')) {
         formcontent['sirene'] = 1;
     } else {
         formcontent['sirene'] = 0;
