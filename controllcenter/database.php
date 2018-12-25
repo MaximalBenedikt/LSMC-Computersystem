@@ -15,5 +15,17 @@
         $sqlstatement = "UPDATE `actions` SET `object` = '" . $_POST['locationobject'] . "' , `position` = '" . $_POST['location'] . "' , `longterm` = '" . $_POST['keywordexpanded'] . "' , `shortterm` = '" . $_POST['keywordshort'] . "' , `callername` = '" . $_POST['callername'] . "' , `callerid` = '" . $_POST['callerid'] . "' , `comment` = '" . $_POST['comment'] . "' , `prio` = '" . $_POST['prio'] . "' , `active` = '1' , `specialrights` = '" . $_POST['sirene']. "' WHERE `enr`=" . $_POST['enr'];
         $statement = $pdo->prepare($sqlstatement);
         $statement->execute();
-        echo $sqlstatement;
+    }
+
+    if ($_POST['action']=='getlastactions') {
+        $sqlstatement = "SELECT `enr`, `date`, `time`, `object`, `position`, `longterm`, `vehicles` FROM `actions` WHERE `active` = 1";
+        $statement = $pdo->prepare($sqlstatement);
+        $statement->execute();
+        $i=0; 
+        $data = array();
+        while ($row = $statement->fetch()) {
+            $data[$i] = $row;
+            $i++;
+        }
+        echo json_encode($data);
     }

@@ -1,4 +1,7 @@
 //Öffnet das Controllcenter
+var lastactionssave = "";
+var newactionhtml = '<tr class="lastactions" id="newlastaction"><td id="enr"></td><td id="time"></td><td id="location"></td><td id="locationobject"></td><td id="keyword"></td><td id="vehicles"></td></tr>';
+
 function openControllcenter(){
     var response;
     $.ajax({
@@ -22,7 +25,10 @@ function openControllcenter(){
         height: 'auto'
     });
     setInterval(
-        'clockupdate()',1000
+        function(){
+            clockupdate(); 
+            loadlastactions();
+        },1000
     );
     $("#completeactionbutton").button().click(function() {
         completeaction();
@@ -144,3 +150,43 @@ function saveactionform() {
 }
 
 
+//Aktualisiert die Tabelle unten
+function loadlastactions() {
+    $.ajax({
+        type:"POST",
+        url:"/controllcenter/database.php",
+        data:{
+            action:"getlastactions"
+        },
+        success:function (data) {
+            if (data != lastactionssave) {
+                lastactionsnew = $.parseJSON(data);
+                $('.lastactions').remove();
+                $.each(lastactionsnew, function (index) {
+                    $('#controllcenter_lastactions tbody').append(newactionhtml);
+                    $('#newlastaction').find('#enr').text(lastactionsnew[index]['enr']);
+                    $('#newlastaction').find('#time').text(lastactionsnew[index]['date'] + " | " + lastactionsnew[index]['time']);
+                    $('#newlastaction').find('#location').text(lastactionsnew[index]['position']);
+                    $('#newlastaction').find('#locationobject').text(lastactionsnew[index]['object']);
+                    $('#newlastaction').find('#keyword').text(lastactionsnew[index]['longterm']);
+                    $('#newlastaction').find('#vehicles').text(lastactionsnew[index]['vehicles']);
+                    newid = lastactionsnew[index]['enr'];
+                    $('#newlastaction').attr("id",newid);
+                    $('#' + newid).click(function() {
+                        loadaction($(this).attr('id'));
+                    });
+                });
+                lastactionssave = data;
+            };
+        }
+    });
+}
+
+//Lädt einen Einsatz in das Formular
+function loadaction(id) {
+    
+}
+
+$(function () {
+
+})
