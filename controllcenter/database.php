@@ -29,3 +29,11 @@
         }
         echo json_encode($data);
     }
+
+    if ($_POST['action']=='getaction') {
+        $sqlstatement = "SELECT `enr`, `date`, `time`, `object`, `position`, `longterm`, `shortterm`, `callername`, `callerid`, `comment`, `prio`, `vehicles`, `active`, `specialrights` FROM `actions` WHERE `enr` = " . $_POST['id'];
+        $statement = $pdo->prepare($sqlstatement);
+        $statement->execute();
+        $row = $statement->fetch();
+        echo json_encode($row);
+    }

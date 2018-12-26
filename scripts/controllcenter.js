@@ -184,7 +184,33 @@ function loadlastactions() {
 
 //Lädt einen Einsatz in das Formular
 function loadaction(id) {
-    
+    $.ajax({
+        type:"POST",
+        url:"/controllcenter/database.php",
+        data:{
+            action:"getaction",
+            id:id
+        },
+        success:function (data) {
+            if (data != false) {
+                action = $.parseJSON(data);
+                form = $('#controllcenter_action_form');
+                $(form).find('#enr').val(action['enr']);
+                $(form).find('#date').val(action['date']);
+                $(form).find('#time').val(action['time']);
+                $(form).find('#locationobject').val(action['object']);
+                $(form).find('#location').val(action['position']);
+                $(form).find('#keywordexpanded').val(action['longterm']);
+                $(form).find('#keywordshort').val(action['shortterm']);
+                $(form).find('#callername').val(action['callername']);
+                $(form).find('#callerid').val(action['callerid']);
+                $(form).find('#comment').val(action['comment']);
+                $(form).find('#prio').val(action['prio']);
+                $('#controllcenter_action_form').find('input, textarea, select').not('.staydisabled').prop( "disabled" , false );
+                $('#controllcenter_action_form').find('.show1, .show2, .show3').button("enable");
+            };
+        },
+    });
 }
 
 $(function () {

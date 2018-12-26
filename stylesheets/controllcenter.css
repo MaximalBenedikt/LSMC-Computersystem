@@ -153,6 +153,7 @@
     border: 1px solid red;
     float: left;
     background-color: white;
+    
 }
 
 #controllcenter_lastactions_header{
@@ -164,6 +165,11 @@
 
 #controllcenter_lastactions table {
     width: 100%;
+}
+
+#controllcenter_lastactions_body {
+    max-height: 81%;
+    overflow-y: auto;
 }
 
 #controllcenter_lastactions table, th, td { 
@@ -190,8 +196,8 @@
     border-right: 1px solid #666;
 }
 
-#controllcenter_lastactions tfoot {
-    border-bottom: 1px solid #666;
+#controllcenter_lastactions tbody {
+    overflow-y: auto;
 }
 
 #controllcenter_lastactions caption {
