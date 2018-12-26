@@ -30,6 +30,7 @@ function openControllcenter(){
         function(){
             clockupdate(); 
             loadlastactions();
+            loadvehicles();
         },1000
     );
     $("#completeactionbutton").button().click(function() {
@@ -216,6 +217,7 @@ function loadaction(id) {
 }
 
 
+//Lädt die Fahrzeuge und Updatet sie auch
 function loadvehicles() {
     $.ajax({
         type:"POST",
@@ -227,19 +229,35 @@ function loadvehicles() {
             vehiclesnew = $.parseJSON(data);
             if (vehiclesnew.length==$('#controllcenter_vehicles_liste').find('.header').length) {
                 if (data != vehiclessave) {
-                    
-                } 
-            }
-            if (true) {
+                    //checkstatus
+                    $('.statusalert, .statusgreen, .statusyellow, .statusred').removeClass('statusalert statusgreen statusyellow statusred');
+                    $.each(vehiclesnew, function (index) {
+                        if ((vehiclesnew[index]['status']==1) || (vehiclesnew[index]['status']==2) || (vehiclesnew[index]['status']==9)) {
+                            status="statusgreen";
+                        } else if ((vehiclesnew[index]['status']==5)){
+                            status="statusalert";
+                        } else if ((vehiclesnew[index]['status']==3)||(vehiclesnew[index]['status']==4)||(vehiclesnew[index]['status']==6)||(vehiclesnew[index]['status']==7)) {
+                            status="statusred";
+                        } else if (vehiclesnew[index]['status']==8) {
+                            status="statusyellow";
+                        }
+                        $('#status' + vehiclesnew[index]['vehicleid']).addClass(status);
+                        $('#status' + vehiclesnew[index]['vehicleid']).text(vehiclesnew[index]['status']);
+                        $('#lastpos' + vehiclesnew[index]['vehicleid']).text(vehiclesnew[index]['lastposition']);
+
+                    })
+                    vehiclessave = data;
+                }
+            } else {
                 $('.vehicles').remove();
                 $.each(vehiclesnew, function (index) {
                     insert = "";
                     insert = insert + '<tr class="header vehicles">';
-                    insert = insert + '<td><button class="statusbuttons" id="' + vehiclesnew[index]['vehicleid'] + '">' + vehiclesnew[index]['status'] + '</button></td>';
+                    insert = insert + '<td><button class="statusbuttons" id="status' + vehiclesnew[index]['vehicleid'] + '">' + vehiclesnew[index]['status'] + '</button></td>';
                     insert = insert + '<td>' + vehiclesnew[index]['vehiclename'] + '</td>';
                     userids= vehiclesnew[index]['userids'].split("|");
                     insert = insert + '<td>' + userids.length + '</td>';
-                    insert = insert + '<td>' + vehiclesnew[index]['lastposition'] + '</td>';
+                    insert = insert + '<td id="lastpos' + vehiclesnew[index]['vehicleid'] + '">' + vehiclesnew[index]['lastposition'] + '</td>';
                     insert = insert + '</tr>';
                     insert = insert + '<tr class="content vehicles"><td colspan="4">';
                     insert = insert + '<table><tr>';
@@ -269,7 +287,16 @@ function loadvehicles() {
                             }
                         });
                     })
-                    
+                    if ((vehiclesnew[index]['status']==1) || (vehiclesnew[index]['status']==2) || (vehiclesnew[index]['status']==9)) {
+                        status="statusgreen";
+                    } else if ((vehiclesnew[index]['status']==5)||(vehiclesnew[index]['status']==0)){
+                        status="statusalert";
+                    } else if ((vehiclesnew[index]['status']==3)||(vehiclesnew[index]['status']==4)||(vehiclesnew[index]['status']==6)||(vehiclesnew[index]['status']==7)) {
+                        status="statusred";
+                    } else if (vehiclesnew[index]['status']==8) {
+                        status="statusyellow";
+                    }
+                    $('#status' + vehiclesnew[index]['vehicleid']).addClass(status);
                 });
                 vehiclessave = data;
                 $("#controllcenter_vehicles_liste tr.content").hide();
@@ -281,7 +308,6 @@ function loadvehicles() {
         }
     });
 }
-
 
 
 
