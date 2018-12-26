@@ -1,6 +1,8 @@
 //Öffnet das Controllcenter
 var lastactionssave = "";
 var newactionhtml = '<tr class="lastactions" id="newlastaction"><td id="enr"></td><td id="time"></td><td id="location"></td><td id="locationobject"></td><td id="keyword"></td><td id="vehicles"></td></tr>';
+var newteamhead = '<tr><th>D-Nr</th><th>Name</th><th>Qualifikation</th></tr>';
+var vehiclessave = "";
 
 function openControllcenter(){
     var response;
@@ -213,6 +215,77 @@ function loadaction(id) {
     });
 }
 
-$(function () {
 
+function loadvehicles() {
+    $.ajax({
+        type:"POST",
+        url:"/controllcenter/database.php",
+        data:{
+            action:"getvehicles"
+        },
+        success:function (data) {
+            vehiclesnew = $.parseJSON(data);
+            if (vehiclesnew.length==$('#controllcenter_vehicles_liste').find('.header').length) {
+                if (data != vehiclessave) {
+                    
+                } 
+            }
+            if (true) {
+                $('.vehicles').remove();
+                $.each(vehiclesnew, function (index) {
+                    insert = "";
+                    insert = insert + '<tr class="header vehicles">';
+                    insert = insert + '<td><button class="statusbuttons" id="' + vehiclesnew[index]['vehicleid'] + '">' + vehiclesnew[index]['status'] + '</button></td>';
+                    insert = insert + '<td>' + vehiclesnew[index]['vehiclename'] + '</td>';
+                    userids= vehiclesnew[index]['userids'].split("|");
+                    insert = insert + '<td>' + userids.length + '</td>';
+                    insert = insert + '<td>' + vehiclesnew[index]['lastposition'] + '</td>';
+                    insert = insert + '</tr>';
+                    insert = insert + '<tr class="content vehicles"><td colspan="4">';
+                    insert = insert + '<table><tr>';
+                    insert = insert + '<th>D-Nr</th><th>Name</th><th>Qualifikation</th>';
+                    $.each(userids, function (index) {
+                        insert = insert + '<tr id="user' + userids[index] + '"></tr>'
+                    });
+                    insert = insert + '</tr>';
+                    insert = insert + '</table>';
+                    insert = insert + '</tr>';
+                    $('#controllcenter_vehicles_liste_tbody').append(insert);
+                    $.each(userids, function (index) {
+                        insert = insert + '<tr id="user' + userids[index] + '"></tr>';
+                        $.ajax({
+                            type:"POST",
+                            url:"/controllcenter/database.php",
+                            data:{
+                                action:"getuser",
+                                id:userids[index]
+                            },
+                            success:function (data) {
+                                user = $.parseJSON(data);
+                                insertuser = "<td>" + user['id'] + "</td>";
+                                insertuser = insertuser + "<td>" + user['name'] + ", " + user['vorname'] + "</td>";
+                                insertuser = insertuser + "<td>" + user['ausbildung'] + "</td>";
+                                $('#user' + user['id']).append(insertuser)
+                            }
+                        });
+                    })
+                    
+                });
+                vehiclessave = data;
+                $("#controllcenter_vehicles_liste tr.content").hide();
+                $("#controllcenter_vehicles_liste tr.header").click(function(){
+                    $("#controllcenter_vehicles_liste tr.content").hide();
+                    $(this).next("tr").fadeToggle(500);
+                }).eq(0).trigger('click');
+            };
+        }
+    });
+}
+
+
+
+
+$(function () {
+    loadvehicles();
+    
 })

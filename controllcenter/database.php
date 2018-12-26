@@ -37,3 +37,24 @@
         $row = $statement->fetch();
         echo json_encode($row);
     }
+
+    if ($_POST['action']=='getvehicles') {
+        $sqlstatement = "SELECT * FROM `vehicles` ORDER BY `vehicletype` ASC, `vehiclename` ASC";
+        $statement = $pdo->prepare($sqlstatement);
+        $statement->execute();
+        $i=0;
+        $data = array();
+        while ($row = $statement->fetch()) {
+            $data[$i] = $row;
+            $i++;
+        }
+        echo json_encode($data);
+    }
+
+    if ($_POST['action']=='getuser') {
+        $sqlstatement = "SELECT * FROM `users` WHERE `id` = " . $_POST['id'];
+        $statement = $pdo->prepare($sqlstatement);
+        $statement->execute();
+        $data = $statement->fetch();
+        echo json_encode($data);
+    }
