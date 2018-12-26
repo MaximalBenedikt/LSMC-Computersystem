@@ -3,6 +3,7 @@ var lastactionssave = "";
 var newactionhtml = '<tr class="lastactions" id="newlastaction"><td id="enr"></td><td id="time"></td><td id="location"></td><td id="locationobject"></td><td id="keyword"></td><td id="vehicles"></td></tr>';
 var newteamhead = '<tr><th>D-Nr</th><th>Name</th><th>Qualifikation</th></tr>';
 var vehiclessave = "";
+var fensterid = 0;
 
 function openControllcenter(){
     var response;
@@ -46,7 +47,7 @@ function openControllcenter(){
         saveactionform();
     });
     $("#dispatchbutton").button().click(function() {
-        dispatchaction();
+        opendispatch();
     });
     $("#actionbutton").button().click(function() {
         opennewaction();
@@ -309,6 +310,60 @@ function loadvehicles() {
     });
 }
 
+//Disponierung öffnen
+function opendispatch() {
+    fensterid++;
+    $('body').append('<div id="dispatch"><select id="dispatch_liste[]" multiple width="150px"><optgroup label="Rettungswagen | Status | Letzte Position" id="dispatch_rtw"></optgroup><optgroup label="Notarzteinsatzfahrzeuge" id="dispatch_nef"></optgroup></select><br><button id="dispatch_send" type="button">Dispatch senden</button></div>');
+    $.ajax({
+        type:"POST",
+        url:"/controllcenter/database.php",
+        data:{
+            action:"getrtw"
+        },
+        async:false,
+        success:function (data) {
+            rtws = $.parseJSON(data);
+            $.each(rtws, function (index) {
+                text = '<option val="' + rtws[index]['vehicleid'] + '">' + rtws[index]['vehiclename'] + ' | ' + rtws[index]['status'] + ' | ' + rtws[index]['lastposition'] + '</option>';
+                $('#dispatch_rtw').append(text);
+            })
+        }
+    });
+    $.ajax({
+        type:"POST",
+        url:"/controllcenter/database.php",
+        data:{
+            action:"getnef"
+        },
+        async:false,
+        success:function (data) {
+            rtws = $.parseJSON(data);
+            $.each(rtws, function (index) {
+                text = '<option val="' + rtws[index]['vehicleid'] + '">' + rtws[index]['vehiclename'] + ' | ' + rtws[index]['status'] + ' | ' + rtws[index]['lastposition'] + '</option>';
+                $('#dispatch_nef').append(text);
+            })
+        }
+    });
+    $('#dispatch').dialog({
+        width: 'auto',
+        height: 'auto'
+    });
+}
+
+
+//Speichert Disponation
+function saveDispo(Fensterid) {
+    $.ajax({
+        type:"POST",
+        url:"/controllcenter/database.php",
+        data:{
+            action:"getactionvehicles"
+        },
+        success:function (data) {
+
+        }
+    });
+}
 
 
 $(function () {

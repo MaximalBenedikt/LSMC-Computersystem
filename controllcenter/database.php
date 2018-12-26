@@ -58,3 +58,29 @@
         $data = $statement->fetch();
         echo json_encode($data);
     }
+
+    if ($_POST['action']=='getrtw') {
+        $sqlstatement = "SELECT * FROM `vehicles` WHERE `vehicletype` = 1 ORDER BY `vehiclename` ASC" ;
+        $statement = $pdo->prepare($sqlstatement);
+        $statement->execute();
+        $i=0;
+        $data = array();
+        while ($row = $statement->fetch()) {
+            $data[$i] = $row;
+            $i++;
+        }
+        echo json_encode($data);
+    }
+
+    if ($_POST['action']=='getnef') {
+        $sqlstatement = "SELECT * FROM `vehicles` WHERE `vehicletype` = 0 ORDER BY `vehiclename` ASC";
+        $statement = $pdo->prepare($sqlstatement);
+        $statement->execute();
+        $i=0;
+        $data = array();
+        while ($row = $statement->fetch()) {
+            $data[$i] = $row;
+            $i++;
+        }
+        echo json_encode($data);
+    }
