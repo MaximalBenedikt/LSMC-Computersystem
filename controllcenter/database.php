@@ -84,3 +84,26 @@
         }
         echo json_encode($data);
     }
+
+    if ($_POST['action']=='pushdispatch') {
+        foreach ($_POST['vehicles'] AS $vehicle) {
+            $sqlstatement = "UPDATE `vehicles` SET `actionid`=" . $_POST['id'] . ",`lastposition`='Einsatz ->" . $_POST['id'] . "'  WHERE `vehicleid`=".$vehicle;
+            echo $sqlstatement . "/n";
+            $statement = $pdo->prepare($sqlstatement);
+            $statement->execute();
+            echo $vehicle;
+        }
+        $data = "";
+        foreach ($_POST['vehicles'] AS $vehicle) {
+            $sqlstatement = "SELECT * FROM `vehicles` WHERE `vehicleid`=".$vehicle;
+            $statement = $pdo->prepare($sqlstatement);
+            $statement->execute();
+            $row = $statement->fetch();
+            $data = $data . $row['vehiclename'] . "|";
+        }
+        echo $data;
+        $sqlstatement = "UPDATE `actions` SET `vehicles`='" . substr($data, 0, -1) . "' WHERE `enr`=".$_POST['id'];
+        $statement = $pdo->prepare($sqlstatement);
+        $statement->execute();
+        echo $sqlstatement;
+    }

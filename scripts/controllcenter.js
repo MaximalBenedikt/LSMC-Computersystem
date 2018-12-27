@@ -313,7 +313,7 @@ function loadvehicles() {
 //Disponierung öffnen
 function opendispatch() {
     fensterid++;
-    $('body').append('<div id="dispatch"><select id="dispatch_liste[]" multiple width="150px"><optgroup label="Rettungswagen | Status | Letzte Position" id="dispatch_rtw"></optgroup><optgroup label="Notarzteinsatzfahrzeuge" id="dispatch_nef"></optgroup></select><br><button id="dispatch_send" type="button">Dispatch senden</button></div>');
+    $('body').append('<div id="dispatch"><select id="dispatch_liste" multiple width="150px" size="8"><optgroup label="Rettungswagen | Status | Letzte Position" id="dispatch_rtw"></optgroup><optgroup label="Notarzteinsatzfahrzeuge" id="dispatch_nef"></optgroup></select><br><button id="dispatch_send" type="button">Dispatch senden</button></div>');
     $.ajax({
         type:"POST",
         url:"/controllcenter/database.php",
@@ -324,7 +324,7 @@ function opendispatch() {
         success:function (data) {
             rtws = $.parseJSON(data);
             $.each(rtws, function (index) {
-                text = '<option val="' + rtws[index]['vehicleid'] + '">' + rtws[index]['vehiclename'] + ' | ' + rtws[index]['status'] + ' | ' + rtws[index]['lastposition'] + '</option>';
+                text = '<option id="' + rtws[index]['vehicleid'] + '">' + rtws[index]['vehiclename'] + ' | ' + rtws[index]['status'] + ' | ' + rtws[index]['lastposition'] + '</option>';
                 $('#dispatch_rtw').append(text);
             })
         }
@@ -339,30 +339,44 @@ function opendispatch() {
         success:function (data) {
             rtws = $.parseJSON(data);
             $.each(rtws, function (index) {
-                text = '<option val="' + rtws[index]['vehicleid'] + '">' + rtws[index]['vehiclename'] + ' | ' + rtws[index]['status'] + ' | ' + rtws[index]['lastposition'] + '</option>';
+                text = '<option id="' + rtws[index]['vehicleid'] + '">' + rtws[index]['vehiclename'] + ' | ' + rtws[index]['status'] + ' | ' + rtws[index]['lastposition'] + '</option>';
                 $('#dispatch_nef').append(text);
             })
         }
+    });
+    $('#dispatch_send').button().click(function () {
+        saveDispatch();
     });
     $('#dispatch').dialog({
         width: 'auto',
         height: 'auto'
     });
+    
 }
 
 
 //Speichert Disponation
-function saveDispo(Fensterid) {
+function saveDispatch() {
+    var vehicles = [];
+    id = $('#controllcenter_action_form').find('#enr').val();
+    i=0;
+    $.each($("#dispatch_liste").find('option:selected'), function() {
+        vehicles[i] = $(this).prop('id'); 
+        i++;
+    });
     $.ajax({
         type:"POST",
         url:"/controllcenter/database.php",
         data:{
-            action:"getactionvehicles"
+            action:"pushdispatch",
+            vehicles:vehicles,
+            id:id
         },
-        success:function (data) {
-
+        success:function(data){
+            console.log(data);
         }
     });
+    $('#dispatch').dialog( 'destroy' ).remove();
 }
 
 
