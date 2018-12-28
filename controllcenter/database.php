@@ -87,13 +87,12 @@
 
     if ($_POST['action']=='pushdispatch') {
         foreach ($_POST['vehicles'] AS $vehicle) {
-            $sqlstatement = "UPDATE `vehicles` SET `actionid`=" . $_POST['id'] . ",`lastposition`='Einsatz ->" . $_POST['id'] . "'  WHERE `vehicleid`=".$vehicle;
+            $sqlstatement = "UPDATE `vehicles` SET `actionid`=" . $_POST['id'] . ",`lastposition`='Einsatz => " . $_POST['id'] . "'  WHERE `vehicleid`=".$vehicle;
             echo $sqlstatement . "/n";
             $statement = $pdo->prepare($sqlstatement);
             $statement->execute();
             echo $vehicle;
         }
-        $data = "";
         foreach ($_POST['vehicles'] AS $vehicle) {
             $sqlstatement = "SELECT * FROM `vehicles` WHERE `vehicleid`=".$vehicle;
             $statement = $pdo->prepare($sqlstatement);
@@ -106,4 +105,40 @@
         $statement = $pdo->prepare($sqlstatement);
         $statement->execute();
         echo $sqlstatement;
+    }
+
+    if ($_POST['action']=='getusers') {
+        if ($_POST['what']=='onduty') {$duty = 1;}
+        if ($_POST['what']=='offduty') {$duty = 0;}
+        if ($_POST['what']=='vacation') {$duty = 2;}
+        if ($_POST['what']=='oncall') {$duty = 3;}
+
+        $sqlstatement = "SELECT * FROM `users` WHERE `onduty` = " . $duty . " ORDER BY `id` ASC" ;
+        $statement = $pdo->prepare($sqlstatement);
+        $statement->execute();
+        $i=0;
+        $data = array();
+        while ($row = $statement->fetch()) {
+            $data[$i] = $row;
+            $i++;
+        }
+        echo json_encode($data);
+    }
+
+    if ($_POST['action']=='deleteaction') {
+        $sqlstatement = "DELETE FROM `actions` WHERE `enr` = " . $_POST['id'] ;
+        $statement = $pdo->prepare($sqlstatement);
+        $statement->execute();
+        $sqlstatement = "UPDATE `vehicles` SET `lastposition`='',`actionid`=0 WHERE `actionid`=" . $_POST['id'] ;
+        $statement = $pdo->prepare($sqlstatement);
+        $statement->execute();
+    }
+    
+    if ($_POST['action']=='deleteaction') {
+        $sqlstatement = "DELETE FROM `actions` WHERE `enr` = " . $_POST['id'] ;
+        $statement = $pdo->prepare($sqlstatement);
+        $statement->execute();
+        $sqlstatement = "UPDATE `vehicles` SET `lastposition`='',`actionid`=0 WHERE `actionid`=" . $_POST['id'] ;
+        $statement = $pdo->prepare($sqlstatement);
+        $statement->execute();
     }

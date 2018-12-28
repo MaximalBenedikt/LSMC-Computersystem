@@ -1,6 +1,6 @@
 //Öffnet das Controllcenter
 var lastactionssave = "";
-var newactionhtml = '<tr class="lastactions" id="newlastaction"><td id="enr"></td><td id="time"></td><td id="location"></td><td id="locationobject"></td><td id="keyword"></td><td id="vehicles"></td></tr>';
+var newactionhtml = '<tr class="lastactions" id="newlastaction"><td id="enr"></td><td id="time"></td><td id="location"></td><td id="locationobject"></td><td id="keyword"></td></tr>';
 var newteamhead = '<tr><th>D-Nr</th><th>Name</th><th>Qualifikation</th></tr>';
 var vehiclessave = "";
 var fensterid = 0;
@@ -173,7 +173,6 @@ function loadlastactions() {
                     $('#newlastaction').find('#location').text(lastactionsnew[index]['position']);
                     $('#newlastaction').find('#locationobject').text(lastactionsnew[index]['object']);
                     $('#newlastaction').find('#keyword').text(lastactionsnew[index]['longterm']);
-                    $('#newlastaction').find('#vehicles').text(lastactionsnew[index]['vehicles']);
                     newid = lastactionsnew[index]['enr'];
                     $('#newlastaction').attr("id",newid);
                     $('#' + newid).click(function() {
@@ -373,11 +372,117 @@ function saveDispatch() {
             id:id
         },
         success:function(data){
-            console.log(data);
         }
     });
     $('#dispatch').dialog( 'destroy' ).remove();
 }
+
+
+//User im Dienst/Feierabend/Urlaub/Auf Abruf
+function showusers() {
+    $("body").append('<div id="userlist"></div>');
+    $("#userlist").append('<ul id="onduty"></ul><ul id="offduty"></ul><ul id="vacation"></ul><ul id="oncall"></ul>');
+    $.ajax({
+        type:"POST",
+        url:"/controllcenter/database.php",
+        data:{
+            action:"getusers",
+            what:"onduty"
+        },
+        success:function(data){
+            onduty = $.parseJSON(data);
+            $('#onduty').append('<h3>Im Dienst</h3>')
+            $.each(onduty, function (index) {
+                $('#onduty').append('<li id="' + onduty[index]['id'] + '">' + onduty[index]['id'] + ' | ' + onduty[index]['name'] + ', ' + onduty[index]['vorname'] + '</li>')
+            })
+        }
+    });
+    $.ajax({
+        type:"POST",
+        url:"/controllcenter/database.php",
+        data:{
+            action:"getusers",
+            what:"offduty"
+        },
+        success:function(data){
+            offduty = $.parseJSON(data);
+            $('#offduty').append('<h3>Außer Dienst</h3>');
+            $.each(offduty, function (index) {
+                $('#offduty').append('<li id="' + offduty[index]['id'] + '">' + offduty[index]['id'] + ' | ' + offduty[index]['name'] + ', ' + offduty[index]['vorname'] + '</li>')
+            })
+        }
+    });
+    $.ajax({
+        type:"POST",
+        url:"/controllcenter/database.php",
+        data:{
+            action:"getusers",
+            what:"vacation"
+        },
+        success:function(data){
+            vacation = $.parseJSON(data);
+            $('#vacation').append('<h3>Urlaub</h3>');
+            $.each(vacation, function (index) {
+                $('#vacation').append('<li id="' + vacation[index]['id'] + '">' + vacation[index]['id'] + ' | ' + vacation[index]['name'] + ', ' + vacation[index]['vorname'] + '</li>')
+            })
+        }
+    });
+    $.ajax({
+        type:"POST",
+        url:"/controllcenter/database.php",
+        data:{
+            action:"getusers",
+            what:"oncall"
+        },
+        success:function(data){
+            oncall = $.parseJSON(data);
+            $('#oncall').append('<h3>Auf Abruf</h3>');
+            $.each(oncall, function (index) {
+                $('#oncall').append('<li id="' + oncall[index]['id'] + '">' + oncall[index]['id'] + ' | ' + oncall[index]['name'] + ', ' + oncall[index]['vorname'] + '</li>')
+            })
+        }
+    });
+    $( "#onduty, #offduty, #vacation, #oncall" ).sortable({
+        connectWith: "#onduty, #offduty, #vacation, #oncall",
+        items: "> li",
+        stop: function( event, ui ) {
+            
+        }
+    });
+    $('#userlist').dialog({
+        width: 'auto',
+        height: 'auto',
+        modal:true,
+        beforeClose: function(){ $('#userlist').dialog('destroy').remove(); }
+    });
+}
+
+function deleteaction() {
+    insert = "<div id='deleteactionwindow' title='Einsatz Löschen'><h3>Möchten sie den Einsatz wirklich Löschen?</h3><button type='button' id='deleteaction'>LÖSCHEN</button><button id='abortactiondelete'>Abbrechen</button></div>";
+    $('body').append(insert);
+    $('#deleteactionwindow #deleteaction').button().click(function(){
+        id = $('#controllcenter_action_form #enr').val();
+        $.ajax({
+            
+            type:"POST",
+            url:"/controllcenter/database.php",
+            data:{
+                action:"deleteaction",
+                id:id
+            },
+        });
+        $('#deleteactionwindow').dialog( 'destroy' ).remove();
+    })
+    $('#deleteactionwindow #abortactiondelete').button().click(function(){ $('#deleteactionwindow').dialog( 'destroy' ).remove(); })
+    $('#deleteactionwindow').dialog({
+        width: 'auto',
+        height: 'auto',
+        beforeClose: function () {
+            $('#deleteactionwindow').dialog( 'destroy' ).remove();
+        }
+    });
+}
+
 
 
 $(function () {
