@@ -134,8 +134,8 @@
         $statement->execute();
     }
     
-    if ($_POST['action']=='deleteaction') {
-        $sqlstatement = "DELETE FROM `actions` WHERE `enr` = " . $_POST['id'] ;
+    if ($_POST['action']=='endaction') {
+        $sqlstatement = "UPDATE `actions` SET `active`=0, `endnote`='" . $_POST['endnote'] . "' WHERE `enr`=" . $_POST['id'] ;
         $statement = $pdo->prepare($sqlstatement);
         $statement->execute();
         $sqlstatement = "UPDATE `vehicles` SET `lastposition`='',`actionid`=0 WHERE `actionid`=" . $_POST['id'] ;

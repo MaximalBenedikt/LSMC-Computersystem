@@ -35,7 +35,7 @@ function openControllcenter(){
         },1000
     );
     $("#completeactionbutton").button().click(function() {
-        completeaction();
+        endaction();
     });
     $("#deleteactionbutton").button().click(function() {
         deleteaction();
@@ -62,6 +62,7 @@ function openControllcenter(){
         $('#savebutton').button( "enable" );
     })
 }
+
 
 //Uhrfunktion
 function clockupdate(){
@@ -118,7 +119,6 @@ function opennewaction(){
 }
 
 
-
 //Löscht das Formular und Deaktiviert es 
 function clearactionform(){
     $('#controllcenter_action_form').find('input, textarea, select').val('')
@@ -126,7 +126,6 @@ function clearactionform(){
     $('#controllcenter_action_form').find('.show2, .show3').button("disable");
     $('#controllcenter_action_form').find('.show1').button("enable");
 }
-
 
 
 //Speichert den Inhalt des Formulars in die Datenbank
@@ -299,15 +298,11 @@ function loadvehicles() {
                     $('#status' + vehiclesnew[index]['vehicleid']).addClass(status);
                 });
                 vehiclessave = data;
-                $("#controllcenter_vehicles_liste tr.content").hide();
-                $("#controllcenter_vehicles_liste tr.header").click(function(){
-                    $("#controllcenter_vehicles_liste tr.content").hide();
-                    $(this).next("tr").fadeToggle(500);
-                }).eq(0).trigger('click');
             };
         }
     });
 }
+
 
 //Disponierung öffnen
 function opendispatch() {
@@ -457,6 +452,8 @@ function showusers() {
     });
 }
 
+
+//Einsatz Löschen
 function deleteaction() {
     insert = "<div id='deleteactionwindow' title='Einsatz Löschen'><h3>Möchten sie den Einsatz wirklich Löschen?</h3><button type='button' id='deleteaction'>LÖSCHEN</button><button id='abortactiondelete'>Abbrechen</button></div>";
     $('body').append(insert);
@@ -479,6 +476,35 @@ function deleteaction() {
         height: 'auto',
         beforeClose: function () {
             $('#deleteactionwindow').dialog( 'destroy' ).remove();
+        }
+    });
+}
+
+
+//Einsatz Beenden
+function endaction() {
+    insert = "<div id='endactionwindow' title='Einsatz Abschließen'><h3>Möchten sie den Einsatz wirklich Abschließen?</h3><textarea cols='50' rows='5'></textarea><br><button type='button' id='endaction'>ABSCHLIEßEN</button><button id='abortactiondelete'>Abbrechen</button></div>";
+    $('body').append(insert);
+    $('#endactionwindow #endaction').button().click(function(){
+        id = $('#controllcenter_action_form #enr').val();
+        endnote = $('#endactionwindow textarea').val();
+        $.ajax({
+            type:"POST",
+            url:"/controllcenter/database.php",
+            data:{
+                action:"endaction",
+                id:id,
+                endnote:endnote
+            },
+        });
+        $('#endactionwindow').dialog( 'destroy' ).remove();
+    })
+    $('#endactionwindow #abortactiondelete').button().click(function(){ $('#endactionwindow').dialog( 'destroy' ).remove(); })
+    $('#endactionwindow').dialog({
+        width: 'auto',
+        height: 'auto',
+        beforeClose: function () {
+            $('#endactionwindow').dialog( 'destroy' ).remove();
         }
     });
 }
