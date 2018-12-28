@@ -244,3 +244,12 @@
     right: 10px;
     bottom: 10px;
 }
+
+#teamsdialog .row {
+    float: left;
+    border: black 1px solid;
+}
+
+#assignedvehicles div {
+    border: 1px solid black;
+}

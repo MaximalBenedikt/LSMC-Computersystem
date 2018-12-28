@@ -533,8 +533,74 @@ function endaction() {
 }
 
 
-
-
+//Zeige Zuweisungen (Teams)
+function showvehicles() {
+    $("body").append('<div id="teamsdialog"><div id="ondutyunassigned" class="row"><ul><h3>Name, Vorname | Qualifikation</h3></ul></div><div class="row"><button id="creatertw">RTW erstellen</button><br><button id="createnef">NEF erstellen</button><br><button id="createteam">Innendienst erstellen</button></div><div id="assignedvehicles" class="row"></div></div>');
+    $.ajax({
+        type:"POST",
+        url:"/controllcenter/database.php",
+        data:{
+            action:"getusers",
+            what:"onduty"
+        },
+        success:function (data) {
+            users=$.parseJSON(data)
+            $.each(users, function (index) {
+                $('#ondutyunassigned ul').append('<li>' + users[index]['name'] + ', ' + users[index]['vorname'] + ' | ' + users[index]['ausbildung'] + '</li>');
+            })
+        }
+    });
+    $.ajax({
+        type:"POST",
+        url:"/controllcenter/database.php",
+        data:{
+            action:"getvehicles"
+        },
+        success:function (data) {
+            vehiclesnew = $.parseJSON(data);
+            $.each(vehiclesnew, function (index) {
+                insert = "";
+                insert = insert + '<div id="' + vehiclesnew[index]['vehicleid'] + '"><h3>' + vehiclesnew[index]['vehiclename'] + '</h3>';
+                insert = insert + '<ul id="vehicle' + vehiclesnew[index]['vehicleid'] + '"><h5>Name, Vorname | Qualifikation </h5>';
+                userids= vehiclesnew[index]['userids'].split("|");
+                $.each(userids, function (index) {
+                    insert = insert + '<li id="user' + userids[index] + '"></li>'
+                });
+                insert = insert + '</ul>';
+                $('#assignedvehicles').append(insert);
+                $.each(userids, function (index) {
+                    insert = insert + '<tr id="user' + userids[index] + '"></tr>';
+                    $.ajax({
+                        type:"POST",
+                        url:"/controllcenter/database.php",
+                        data:{
+                            action:"getuser",
+                            id:userids[index]
+                        },
+                        success:function (data) {
+                            user = $.parseJSON(data);
+                            insertuser = user['name'] + ", " + user['vorname'] + " | " + user['ausbildung'];
+                            $('#assignedvehicles #user' + user['id']).append(insertuser)
+                        }
+                    });
+                })
+            });
+        }
+    });
+    $('#teamsdialog').dialog({
+        width: 'auto',
+        height: 'auto',
+        position:{
+            me:"left top",
+            at:"left top",
+            of:'#controllcenter'
+        },
+        modal:true,
+        beforeClose: function () {
+            $('#teamsdialog').dialog( 'destroy' ).remove();
+        }
+    });
+}
 
 $(function () {
     loadvehicles();
