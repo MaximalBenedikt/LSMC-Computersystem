@@ -232,11 +232,18 @@
 
 #userlist ul {
     float: left;
-    width: 210px;
+    width: 230px;
     border: 1px solid black;
     margin: 3px;
     padding-bottom: 10px;
     border-radius: 5px;
+    padding: 10px;
+    list-style: none;
+}
+
+#userlist li {
+    padding: 4px;
+    margin: 1px;
 }
 
 #userlist button {

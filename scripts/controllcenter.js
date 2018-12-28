@@ -376,7 +376,7 @@ function saveDispatch() {
 
 //User im Dienst/Feierabend/Urlaub/Auf Abruf + Speichern dieser Infos
 function showusers() {
-    $("body").append('<div id="userlist"></div>');
+    $("body").append('<div id="userlist" title="Dienstplan"></div>');
     $("#userlist").append('<ul id="onduty"></ul><ul id="offduty"></ul><ul id="vacation"></ul><ul id="oncall"><button id="saveusers">Speichern</button></ul>');
     $.ajax({
         type:"POST",
@@ -389,7 +389,7 @@ function showusers() {
             onduty = $.parseJSON(data);
             $('#onduty').append('<h3>Im Dienst</h3>')
             $.each(onduty, function (index) {
-                $('#onduty').append('<li id="' + onduty[index]['id'] + '">' + onduty[index]['id'] + ' | ' + onduty[index]['name'] + ', ' + onduty[index]['vorname'] + '</li>')
+                $('#onduty').append('<li id="' + onduty[index]['id'] + '" class="ui-state-default">' + onduty[index]['id'] + ' | ' + onduty[index]['name'] + ', ' + onduty[index]['vorname'] + '</li>')
             })
         }
     });
@@ -404,7 +404,7 @@ function showusers() {
             offduty = $.parseJSON(data);
             $('#offduty').append('<h3>Außer Dienst</h3>');
             $.each(offduty, function (index) {
-                $('#offduty').append('<li id="' + offduty[index]['id'] + '">' + offduty[index]['id'] + ' | ' + offduty[index]['name'] + ', ' + offduty[index]['vorname'] + '</li>')
+                $('#offduty').append('<li id="' + offduty[index]['id'] + '" class="ui-state-default">' + offduty[index]['id'] + ' | ' + offduty[index]['name'] + ', ' + offduty[index]['vorname'] + '</li>')
             })
         }
     });
@@ -419,7 +419,7 @@ function showusers() {
             vacation = $.parseJSON(data);
             $('#vacation').append('<h3>Urlaub</h3>');
             $.each(vacation, function (index) {
-                $('#vacation').append('<li id="' + vacation[index]['id'] + '">' + vacation[index]['id'] + ' | ' + vacation[index]['name'] + ', ' + vacation[index]['vorname'] + '</li>')
+                $('#vacation').append('<li id="' + vacation[index]['id'] + '" class="ui-state-default">' + vacation[index]['id'] + ' | ' + vacation[index]['name'] + ', ' + vacation[index]['vorname'] + '</li>')
             })
         }
     });
@@ -434,10 +434,11 @@ function showusers() {
             oncall = $.parseJSON(data);
             $('#oncall').append('<h3>Auf Abruf</h3>');
             $.each(oncall, function (index) {
-                $('#oncall').append('<li id="' + oncall[index]['id'] + '">' + oncall[index]['id'] + ' | ' + oncall[index]['name'] + ', ' + oncall[index]['vorname'] + '</li>')
+                $('#oncall').append('<li id="' + oncall[index]['id'] + '" class="ui-state-default">' + oncall[index]['id'] + ' | ' + oncall[index]['name'] + ', ' + oncall[index]['vorname'] + '</li>')
             })
         }
     });
+    $("#userlist").disableSelection();
     $( "#onduty, #offduty, #vacation, #oncall" ).sortable({
         connectWith: "#onduty, #offduty, #vacation, #oncall",
         items: "> li",
