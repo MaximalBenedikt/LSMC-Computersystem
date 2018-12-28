@@ -343,7 +343,8 @@ function opendispatch() {
     });
     $('#dispatch').dialog({
         width: 'auto',
-        height: 'auto'
+        height: 'auto',
+        modal:true,
     });
     
 }
@@ -373,10 +374,10 @@ function saveDispatch() {
 }
 
 
-//User im Dienst/Feierabend/Urlaub/Auf Abruf
+//User im Dienst/Feierabend/Urlaub/Auf Abruf + Speichern dieser Infos
 function showusers() {
     $("body").append('<div id="userlist"></div>');
-    $("#userlist").append('<ul id="onduty"></ul><ul id="offduty"></ul><ul id="vacation"></ul><ul id="oncall"></ul>');
+    $("#userlist").append('<ul id="onduty"></ul><ul id="offduty"></ul><ul id="vacation"></ul><ul id="oncall"><button id="saveusers">Speichern</button></ul>');
     $.ajax({
         type:"POST",
         url:"/controllcenter/database.php",
@@ -440,16 +441,36 @@ function showusers() {
     $( "#onduty, #offduty, #vacation, #oncall" ).sortable({
         connectWith: "#onduty, #offduty, #vacation, #oncall",
         items: "> li",
-        stop: function( event, ui ) {
-            
-        }
     });
     $('#userlist').dialog({
         width: 'auto',
         height: 'auto',
+        position: {
+            my: "top",
+            at: "top",
+            of: "#controllcenter"
+        },
         modal:true,
         beforeClose: function(){ $('#userlist').dialog('destroy').remove(); }
     });
+    $('#saveusers').button().click(function () {
+        onduty = $('#onduty').sortable('toArray');
+        offduty = $('#offduty').sortable('toArray');
+        oncall = $('#oncall').sortable('toArray');
+        vacation = $('#vacation').sortable('toArray');
+        $.ajax({
+            type:"POST",
+            url:"/controllcenter/database.php",
+            data:{
+                action:"setduty",
+                onduty:onduty,
+                offduty:offduty,
+                oncall:oncall,
+                vacation:vacation
+            }
+        })
+        $('#userlist').dialog('destroy').remove();
+    })
 }
 
 
@@ -474,6 +495,7 @@ function deleteaction() {
     $('#deleteactionwindow').dialog({
         width: 'auto',
         height: 'auto',
+        modal:true,
         beforeClose: function () {
             $('#deleteactionwindow').dialog( 'destroy' ).remove();
         }
@@ -503,11 +525,14 @@ function endaction() {
     $('#endactionwindow').dialog({
         width: 'auto',
         height: 'auto',
+        modal:true,
         beforeClose: function () {
             $('#endactionwindow').dialog( 'destroy' ).remove();
         }
     });
 }
+
+
 
 
 

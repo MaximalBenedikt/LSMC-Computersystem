@@ -229,3 +229,18 @@
         background-color: #e50000;
     }
 }
+
+#userlist ul {
+    float: left;
+    width: 210px;
+    border: 1px solid black;
+    margin: 3px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+}
+
+#userlist button {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}

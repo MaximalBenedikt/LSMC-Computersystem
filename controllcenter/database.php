@@ -142,3 +142,21 @@
         $statement = $pdo->prepare($sqlstatement);
         $statement->execute();
     }
+
+    if ($_POST['action']=='setduty') {
+        $sqlstatement = "";
+        foreach ($_POST['onduty'] as $user) {
+            $sqlstatement = $sqlstatement . "UPDATE `users` SET `onduty`=1 WHERE `id`=".$user."; ";
+        }
+        foreach ($_POST['offduty'] as $user) {
+            $sqlstatement = $sqlstatement . "UPDATE `users` SET `onduty`=0 WHERE `id`=".$user."; ";
+        }
+        foreach ($_POST['vacation'] as $user) {
+            $sqlstatement = $sqlstatement . "UPDATE `users` SET `onduty`=2 WHERE `id`=".$user."; ";
+        }
+        foreach ($_POST['oncall'] as $user) {
+            $sqlstatement = $sqlstatement . "UPDATE `users` SET `onduty`=3 WHERE `id`=".$user."; ";
+        }
+        $statement = $pdo->prepare($sqlstatement);
+        $statement->execute();
+    }
